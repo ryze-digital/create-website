@@ -1,5 +1,5 @@
 import fs from 'fs';
-import packageJson from "./package.json" assert { type: "json" };
+import packageJson from './package.json' with { type: 'json' };
 
 if (fs.existsSync(packageJson.config.output)) {
     fs.rm(packageJson.config.output, { recursive: true }, (err) => {
@@ -7,6 +7,6 @@ if (fs.existsSync(packageJson.config.output)) {
             console.error(err.message);
             return;
         }
-        console.log("Folder deleted successfully");
+        console.log('Folder deleted successfully');
     });
 }

@@ -1,9 +1,9 @@
-const path = require('path');
-const TerserPlugin = require('terser-webpack-plugin');
-const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
-const packageJson = require('./package.json');
+import path from 'path';
+import TerserPlugin from 'terser-webpack-plugin';
+import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
+import packageJson from './package.json' with { type: 'json' };
 
-module.exports = (env, argv) => {
+export default function (env, argv) {
     let mode = 'development';
 
     const plugins = [];
@@ -26,7 +26,7 @@ module.exports = (env, argv) => {
             lazysizes: ['./src/scripts/lazysizes']
         },
         output: {
-            path: path.resolve(__dirname, `${packageJson.config.output}/`),
+            path: path.resolve(`${packageJson.config.output}/`),
             publicPath: '/project/frontend/'
         },
         optimization: {

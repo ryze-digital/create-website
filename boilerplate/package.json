@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "author": "RYZE Digital GmbH <kontakt@ryze-digital.de> (https://www.ryze-digital.de/)",
   "main": "src/scripts/main.js",
+  "type": "module",
   "config": {
     "output": "build"
   },
@@ -29,8 +30,8 @@
     "sass:build": "sass src/styles:$npm_package_config_output --no-source-map --load-path=node_modules",
     "sass:watch": "sass src/styles:$npm_package_config_output --no-source-map --load-path=node_modules --watch --poll",
     "lightning": "lightningcss --browserslist $npm_package_config_output/*.css --output-dir $npm_package_config_output --minify",
-    "prebuild": "node pre-build.mjs",
-    "pre-production": "grunt pre-production"
+    "prebuild": "node pre-build.js",
+    "pre-production": "grunt pre-production --gruntfile Gruntfile.cjs"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
