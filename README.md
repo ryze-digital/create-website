@@ -1,5 +1,7 @@
 # RYZE Digital Project Starter Kit
 
+![Run linter(s) workflow status](https://github.com/ryze-digital/create-website/actions/workflows/run-lint.yml/badge.svg)
+
 ## Usage
 
 Open the folder in which you want to set up a new project. In Ecoma projects (for example) this is
