@@ -54,7 +54,7 @@
     "webpack-cli": "^5.0.0"
   },
   "dependencies": {
-    "@ryze-digital/js-utilities\n\n": "^1.0.0-beta.0",
+    "@ryze-digital/js-utilities": "^1.0.0-beta.0",
     "@ryze-digital/scss-utilities": "^1.0.0-beta.0",
     "core-js": "^3.0.0",
     "lazysizes": "^5.0.0",
