@@ -19,7 +19,7 @@
     "shelljs": "^0.8.5"
   },
   "devDependencies": {
-    "@ryze-digital/eslint-config-website": "^1.0.0-beta.1"
+    "@ryze-digital/eslint-config-website": "^1.0.0-beta.2"
   },
   "keywords": [
     "initializer",

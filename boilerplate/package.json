@@ -36,8 +36,8 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
-    "@ryze-digital/eslint-config-website": "^1.0.0-beta.1",
-    "@ryze-digital/stylelint-config-website": "^1.0.0-beta.0",
+    "@ryze-digital/eslint-config-website": "^1.0.0-beta.2",
+    "@ryze-digital/stylelint-config-website": "^1.0.0-beta.1",
     "babel-loader": "^9.0.0",
     "copyfiles": "^2.0.0",
     "globals": "^15.0.0",
