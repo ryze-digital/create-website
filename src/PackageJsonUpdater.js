@@ -51,7 +51,7 @@ class PackageJsonUpdater {
 
                 resolve(json);
             } catch (error) {
-                reject(new Error('package.json could not be parsed to JSON'));
+                reject(new Error(`package.json could not be parsed to JSON because of the following error: ${error}`));
             }
         });
     }
