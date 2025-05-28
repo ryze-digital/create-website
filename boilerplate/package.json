@@ -10,6 +10,7 @@
     "output": "build"
   },
   "scripts": {
+    "check-engine": "node check-engine.js",
     "lint": "npm-run-all --parallel lint:*",
     "lint:scripts": "eslint {src,tests}/scripts/**",
     "lint:styles": "stylelint src/styles/**",
@@ -30,7 +31,7 @@
     "sass:build": "sass src/styles:$npm_package_config_output --no-source-map --load-path=node_modules",
     "sass:watch": "sass src/styles:$npm_package_config_output --no-source-map --load-path=node_modules --watch --poll",
     "lightning": "lightningcss --browserslist $npm_package_config_output/*.css --output-dir $npm_package_config_output --minify",
-    "prebuild": "node pre-build.js",
+    "prebuild": "npm run check-engine && node pre-build.js",
     "pre-production": "grunt pre-production --gruntfile Gruntfile.cjs"
   },
   "devDependencies": {
@@ -40,6 +41,7 @@
     "@ryze-digital/prettier-config-website": "^1.0.0",
     "@ryze-digital/stylelint-config-website": "^1.0.0",
     "babel-loader": "^9.0.0",
+    "check-engine": "^1.0.0",
     "copyfiles": "^2.0.0",
     "globals": "^15.0.0",
     "imagemin": "^9.0.0",
@@ -66,5 +68,9 @@
   "browserslist": [
     "> 0.5%",
     "not IE > 0"
-  ]
+  ],
+  "engines": {
+    "node": "^22",
+    "npm": "^10"
+  }
 }
