@@ -40,10 +40,9 @@
     "@ryze-digital/eslint-config-website": "^1.0.0",
     "@ryze-digital/prettier-config-website": "^1.0.0",
     "@ryze-digital/stylelint-config-website": "^1.0.0",
-    "babel-loader": "^9.0.0",
+    "babel-loader": "^10.0.0",
     "check-engine": "^1.0.0",
     "copyfiles": "^2.0.0",
-    "globals": "^15.0.0",
     "imagemin": "^9.0.0",
     "imagemin-cli": "^8.0.0",
     "imagemin-mozjpeg": "^10.0.0",
@@ -56,11 +55,11 @@
     "terser-webpack-plugin": "^5.0.0",
     "webpack": "^5.0.0",
     "webpack-bundle-analyzer": "^4.0.0",
-    "webpack-cli": "^5.0.0"
+    "webpack-cli": "^6.0.0"
   },
   "dependencies": {
-    "@ryze-digital/js-utilities": "^1.0.0-beta.0",
-    "@ryze-digital/scss-utilities": "^1.0.0-beta.0",
+    "@ryze-digital/js-utilities": "^1.0.0",
+    "@ryze-digital/scss-utilities": "^1.0.0",
     "core-js": "^3.0.0",
     "lazysizes": "^5.0.0",
     "regenerator-runtime": "^0.13.0"
