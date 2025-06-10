@@ -43,8 +43,8 @@ function askInput(query) {
     }))
 }
 
-const boilerplates = fs.readdirSync('./boilerplates').filter(file =>
-    fs.statSync(path.join('./boilerplates', file)).isDirectory()
+const boilerplates = fs.readdirSync('boilerplates').filter(file =>
+    fs.statSync(path.join('boilerplates', file)).isDirectory()
 );
 const boilerplate = await cliSelect({
     values: boilerplates,
@@ -59,15 +59,13 @@ const boilerplate = await cliSelect({
 const projectName = await askInput('Please enter the name of your project: ')
 
 if (typeof projectName === 'undefined' || projectName === '@namespace/project-name') {
-    console.error(chalk.red('Please enter the name of your project'));
+    console.error(chalk.red('Please enter the name of your project:'));
     process.exit(9);
 }
 
 let outputPath = 'build';
-const hasCustomPath = await askYesOrNo("Installing with custom output path? (y/n) ");
-if (hasCustomPath) {
-    outputPath = await askInput("Please enter custom path: ")
-}
+let answer = await askInput("Add custom build path if needed:")
+if (answer) outputPath = answer;
 
 const currentDirectory = path.dirname(fse.realpathSync(process.argv[1]));
 const loglevelIndex = process.argv.indexOf('--loglevel');
@@ -83,7 +81,7 @@ console.log(chalk.yellow('Delete exisiting .gitkeep file'));
 fse.unlink(path.resolve('.gitkeep'), () => {});
 
 console.log(chalk.yellow('Copy files from boilerplate'));
-fse.copySync(path.join(currentDirectory, `boilerplate-${boilerplate.value}`), process.cwd());
+fse.copySync(path.join(currentDirectory, `./boilerplates/${boilerplate.value}`), process.cwd());
 
 console.log(chalk.yellow('Installing packages'));
 new PackageJsonUpdater(projectName, loglevel, outputPath);
