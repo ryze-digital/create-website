@@ -3,6 +3,7 @@
 import { PackageJsonUpdater } from './src/PackageJsonUpdater.js';
 import chalk from 'chalk';
 import path from 'node:path';
+import fs from 'fs';
 import fse from 'fs-extra';
 import * as readline from 'readline'
 import cliSelect from 'cli-select';
@@ -42,8 +43,11 @@ function askInput(query) {
     }))
 }
 
+const boilerplates = fs.readdirSync('./boilerplates').filter(file =>
+    fs.statSync(path.join('./boilerplates', file)).isDirectory()
+);
 const boilerplate = await cliSelect({
-    values: ['default', 'ecoma'],
+    values: boilerplates,
     valueRenderer: (value, selected) => {
         if (selected) {
             return chalk.yellow(value);
