@@ -30,7 +30,7 @@ console.log(chalk.yellow('Delete exisiting .gitkeep file'));
 fse.unlink(path.resolve('.gitkeep'), () => {});
 
 console.log(chalk.yellow('Copy files from boilerplate'));
-fse.copySync(path.join(currentDirectory, 'boilerplate'), process.cwd());
+fse.copySync(path.join(currentDirectory, '/boilerplates/ecoma'), process.cwd());
 
 console.log(chalk.yellow('Installing packages'));
 new PackageJsonUpdater(projectName, loglevel, outputPath);
