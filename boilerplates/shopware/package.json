@@ -1,18 +1,18 @@
 {
-  "name": "@ryze-digital/ecoma-boilerplate",
+  "name": "@ryze-digital/shopware-boilerplate",
   "description": "",
   "license": "MIT",
   "version": "0.1.0",
   "author": "RYZE Digital GmbH <kontakt@ryze-digital.de> (https://www.ryze-digital.de/)",
-  "main": "src/scripts/main.js",
+  "main": "src/main.js",
   "type": "module",
   "config": {
-    "output": "build"
+    "output": "../../public"
   },
   "scripts": {
     "check-engine": "node check-engine.js",
     "lint": "npm-run-all --parallel lint:*",
-    "lint:scripts": "eslint {src,tests}/scripts/**",
+    "lint:scripts": "eslint {src,tests}/**",
     "lint:styles": "stylelint src/styles/**",
     "lint-fix": "npm-run-all --parallel lint-fix:* --continue-on-error",
     "lint-fix:scripts": "npm run lint:scripts -- --fix",
@@ -21,26 +21,21 @@
     "test:scripts": "jest",
     "test:scripts:coverage": "jest --coverage",
     "build": "npm-run-all --parallel lint:* copy:* build:* --continue-on-error",
-    "build:scripts": "webpack",
     "build:styles": "npm-run-all sass:build lightning",
     "build:images": "imagemin src/pics --out-dir=$npm_package_config_output --plugin=mozjpeg --plugin=gifsicle --plugin=optipng --plugin=svgo",
     "copy:fonts": "copyfiles src/fonts/**/* $npm_package_config_output --flat",
     "watch": "npm-run-all --parallel watch:*",
-    "watch:scripts": "webpack --watch",
     "watch:styles": "npm run sass:watch",
-    "sass:build": "sass src/styles:$npm_package_config_output --no-source-map --load-path=node_modules",
-    "sass:watch": "sass src/styles:$npm_package_config_output --no-source-map --load-path=node_modules --watch --poll",
+    "sass:build": "sass src/scss:$npm_package_config_output --no-source-map --load-path=node_modules",
+    "sass:watch": "sass src/scss:$npm_package_config_output --no-source-map --load-path=node_modules --watch --poll",
     "lightning": "lightningcss --browserslist $npm_package_config_output/*.css --output-dir $npm_package_config_output --minify",
-    "prebuild": "npm run check-engine && node pre-build.js",
+    "prebuild": "npm run check-engine",
     "pre-production": "grunt pre-production --gruntfile Gruntfile.cjs"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
     "@ryze-digital/eslint-config-website": "^1.0.0",
     "@ryze-digital/prettier-config-website": "^1.0.0",
     "@ryze-digital/stylelint-config-website": "^1.0.0",
-    "babel-loader": "^10.0.0",
     "check-engine": "^1.0.0",
     "copyfiles": "^2.0.0",
     "imagemin": "^9.0.0",
@@ -51,18 +46,11 @@
     "jest-junit": "^16.0.0",
     "lightningcss": "^1.0.0",
     "lightningcss-cli": "^1.0.0",
-    "npm-run-all": "^4.0.0",
-    "terser-webpack-plugin": "^5.0.0",
-    "webpack": "^5.0.0",
-    "webpack-bundle-analyzer": "^4.0.0",
-    "webpack-cli": "^6.0.0"
+    "npm-run-all": "^4.0.0"
   },
   "dependencies": {
     "@ryze-digital/js-utilities": "^1.0.0",
-    "@ryze-digital/scss-utilities": "^1.0.0",
-    "core-js": "^3.0.0",
-    "lazysizes": "^5.0.0",
-    "regenerator-runtime": "^0.13.0"
+    "@ryze-digital/scss-utilities": "^1.0.0"
   },
   "overrides": {
     "globals": "16.0.0"
