@@ -29,8 +29,7 @@
     "sass:build": "sass src/scss:$npm_package_config_output --no-source-map --load-path=node_modules",
     "sass:watch": "sass src/scss:$npm_package_config_output --no-source-map --load-path=node_modules --watch --poll",
     "lightning": "lightningcss --browserslist $npm_package_config_output/*.css --output-dir $npm_package_config_output --minify",
-    "prebuild": "npm run check-engine",
-    "pre-production": "grunt pre-production --gruntfile Gruntfile.cjs"
+    "prebuild": "npm run check-engine"
   },
   "devDependencies": {
     "@ryze-digital/eslint-config-website": "^1.0.0",
