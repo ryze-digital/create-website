@@ -11,7 +11,8 @@
     "create-website": "index.js"
   },
   "scripts": {
-    "lint": "eslint src/**"
+    "lint": "eslint src ./*.js",
+    "lint-fix": "npm run lint -- --fix"
   },
   "dependencies": {
     "chalk": "^5.4.1",
