@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import util from 'node:util';
 import path from 'node:path';
-import shell from 'shelljs';
+import child_process from 'node:child_process';
 import chalk from 'chalk';
 
 class PackageJsonUpdater {
@@ -66,11 +66,16 @@ class PackageJsonUpdater {
     }
 
     updatePackageVersions() {
-        shell.exec(`npx npm-check-updates --target minor --upgrade --packageFile package.json --loglevel ${this.loglevel}`, () => {
-            shell.exec(`npm install --loglevel ${this.loglevel}`, () => {
-                console.info(chalk.green('Adventure ready'));
-            });
-        });
+        child_process.spawnSync('npx', [
+            'npm-check-updates',
+            '--upgrade',
+            '--target', 'minor',
+            '--packageFile', 'package.json',
+            '--loglevel', this.loglevel,
+        ], { stdio: 'inherit' });
+        child_process.spawnSync('npm', ['install', '--loglevel', this.loglevel], { stdio: 'inherit' });
+
+        console.info(chalk.green('Adventure ready'));
     }
 
     init() {
