@@ -21,7 +21,7 @@ class BoilerplateInstaller {
         this.#copyBoilerplateFiles(installDirPath, installOptions.boilerplate);
 
         console.log(chalk.yellow('Installing packages'));
-        await new PackageJsonUpdater(installOptions.projectName, installOptions.logLevel, installOptions.outputPath).execute();
+        await new PackageJsonUpdater(installOptions.projectName, installOptions.logLevel, installOptions.outputPath, path.join(installDirPath, 'package.json')).execute();
     }
 
     /**
