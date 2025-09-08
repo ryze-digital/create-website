@@ -1,8 +1,10 @@
+import { confirm, input, select } from '@inquirer/prompts';
 import fs from 'node:fs';
 import { BOILERPLATE_PATH } from './constants.js';
-import { confirm, input, select } from '@inquirer/prompts';
 
 class InteractiveUserInputs {
+    static #FALLBACK_PROJECT_NAME = '@namespace/project-name';
+
     /**
      * @typedef {object} InstallerUserResponses
      * @property {string} projectName
@@ -14,7 +16,7 @@ class InteractiveUserInputs {
      * @param {string} defaultProjectName
      * @param {string} defaultOutputPath
      */
-    constructor(defaultProjectName = '@namespace/project-name', defaultOutputPath = 'build') {
+    constructor(defaultProjectName = InteractiveUserInputs.#FALLBACK_PROJECT_NAME, defaultOutputPath = 'build') {
         this.defaultProjectName = defaultProjectName;
         this.defaultOutputPath = defaultOutputPath;
     }
@@ -47,7 +49,17 @@ class InteractiveUserInputs {
      * @returns {Promise<string>}
      */
     #askProjectName() {
-        return input({ message: 'What should the project name be?', default: this.defaultProjectName });
+        return input({
+            message: 'What should the project name be?',
+            default: this.defaultProjectName,
+            validate: (value) => {
+                if (value === InteractiveUserInputs.#FALLBACK_PROJECT_NAME) {
+                    return 'Please enter a proper project name';
+                }
+
+                return true;
+            },
+        });
     }
 
     /**
