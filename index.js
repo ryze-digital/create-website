@@ -1,13 +1,15 @@
 #!/usr/bin/env node
 
-import { PackageJsonUpdater } from './src/PackageJsonUpdater.js';
 import chalk from 'chalk';
-import path from 'node:path';
+import fs from 'node:fs';
 import fse from 'fs-extra';
+import path from 'node:path';
+import { InteractiveUserInputs } from './src/InteractiveUserInputs.js';
+import { PackageJsonUpdater } from './src/PackageJsonUpdater.js';
 
 const currentDirectory = path.dirname(fse.realpathSync(process.argv[1]));
-const projectName = process.argv[2];
-let outputPath = process.argv[3];
+const defaultProjectName = process.argv[2];
+const defaultOutputPath = process.argv[3];
 const loglevelIndex = process.argv.indexOf('--loglevel');
 let loglevel;
 
@@ -17,20 +19,25 @@ if (loglevelIndex > -1) {
 
 loglevel = (loglevel || 'silent');
 
-if (typeof projectName === 'undefined' || projectName === '@namespace/project-name') {
-    console.error(chalk.red('Please enter the name of your project'));
-    process.exit(9);
+const interactiveUserInputs = new InteractiveUserInputs(defaultProjectName, defaultOutputPath);
+const installerResponses = await interactiveUserInputs.askAllInstallerQuestions();
+
+if (fs.existsSync('package.json')) {
+    const shouldContinue = await interactiveUserInputs.askForConfirmation('A package.json file already exists. Continue?');
+
+    if (!shouldContinue) {
+        console.log(chalk.red('Aborting installation'));
+        process.exit(0);
+    }
 }
 
-if (typeof outputPath === 'undefined') {
-    outputPath = 'build';
+if (installerResponses.boilerplate === 'ecoma') {
+    console.log(chalk.yellow('Delete exisiting .gitkeep file'));
+    fse.unlink(path.resolve('.gitkeep'), () => {});
 }
-
-console.log(chalk.yellow('Delete exisiting .gitkeep file'));
-fse.unlink(path.resolve('.gitkeep'), () => {});
 
 console.log(chalk.yellow('Copy files from boilerplate'));
-fse.copySync(path.join(currentDirectory, '/boilerplates/ecoma'), process.cwd());
+fse.copySync(path.join(currentDirectory, 'boilerplates', installerResponses.boilerplate), process.cwd());
 
 console.log(chalk.yellow('Installing packages'));
-new PackageJsonUpdater(projectName, loglevel, outputPath);
+new PackageJsonUpdater(installerResponses.projectName, loglevel, installerResponses.outputPath);

@@ -14,6 +14,7 @@
     "lint": "eslint src/**"
   },
   "dependencies": {
+    "@inquirer/prompts": "^7.8.4",
     "chalk": "^5.4.1",
     "fs-extra": "^11.2.0"
   },
