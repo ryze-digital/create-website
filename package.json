@@ -21,6 +21,9 @@
   "devDependencies": {
     "@ryze-digital/eslint-config-website": "^1.0.0"
   },
+  "engines": {
+    "node": ">=20"
+  },
   "keywords": [
     "initializer",
     "create",
