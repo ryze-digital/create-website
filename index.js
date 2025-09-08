@@ -22,4 +22,5 @@ if (fs.existsSync(path.join(targetInstallDir, 'package.json'))) {
     }
 }
 
-new BoilerplateInstaller().install(targetInstallDir, { ...installerResponses, logLevel: parsedArgs.logLevel });
+await new BoilerplateInstaller().install(targetInstallDir, { ...installerResponses, logLevel: parsedArgs.logLevel });
+console.info(chalk.green('Adventure ready'));

@@ -12,16 +12,16 @@ class BoilerplateInstaller {
      * @param {string} installOptions.outputPath
      * @param {string} installOptions.boilerplate
      * @param {string} installOptions.logLevel
-     * @returns {void}
+     * @returns {Promise<void>}
      */
-    install(installDirPath, installOptions) {
+    async install(installDirPath, installOptions) {
         this.#preInstallStep(installDirPath);
 
         console.log(chalk.yellow('Copying files from boilerplate'));
         this.#copyBoilerplateFiles(installDirPath, installOptions.boilerplate);
 
         console.log(chalk.yellow('Installing packages'));
-        new PackageJsonUpdater(installOptions.projectName, installOptions.logLevel, installOptions.outputPath);
+        await new PackageJsonUpdater(installOptions.projectName, installOptions.logLevel, installOptions.outputPath).execute();
     }
 
     /**

@@ -1,8 +1,8 @@
-import fs from 'node:fs';
-import util from 'node:util';
-import path from 'node:path';
-import child_process from 'node:child_process';
 import chalk from 'chalk';
+import child_process from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+import util from 'node:util';
 
 class PackageJsonUpdater {
     /**
@@ -24,8 +24,16 @@ class PackageJsonUpdater {
         this.editPackageJson = this.editPackageJson.bind(this);
         this.savePackageJson = this.savePackageJson.bind(this);
         this.updatePackageVersions = this.updatePackageVersions.bind(this);
+    }
 
-        this.init();
+    /**
+     * @returns {Promise<void>}
+     */
+    execute() {
+        return this.readPackageJson()
+            .then(this.editPackageJson)
+            .then(this.savePackageJson)
+            .then(this.updatePackageVersions);
     }
 
     /**
@@ -74,21 +82,9 @@ class PackageJsonUpdater {
             '--loglevel', this.loglevel,
         ], { stdio: 'inherit' });
         child_process.spawnSync('npm', ['install', '--loglevel', this.loglevel], { stdio: 'inherit' });
-
-        console.info(chalk.green('Adventure ready'));
-    }
-
-    init() {
-        this.readPackageJson()
-            .then(this.editPackageJson)
-            .then(this.savePackageJson)
-            .then(this.updatePackageVersions)
-            .catch((error) => {
-                console.error(chalk.red(error));
-            });
     }
 }
 
 export {
-    PackageJsonUpdater
+    PackageJsonUpdater,
 };
