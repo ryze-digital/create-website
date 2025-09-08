@@ -1,3 +1,6 @@
+import { chalkStderr } from 'chalk';
+import { parseArgs } from 'node:util';
+
 class CliArgumentParser {
     /**
      * @typedef {object} ParsedArguments
@@ -10,28 +13,30 @@ class CliArgumentParser {
      * @returns {ParsedArguments}
      */
     parseArgs() {
-        const defaultProjectName = process.argv[2] || undefined;
-        const defaultOutputPath = process.argv[3] || undefined;
-        const logLevel = this.#parseLogLevelArgument();
+        let parsedArgs;
 
-        return {
-            defaultProjectName,
-            defaultOutputPath,
-            logLevel,
-        };
-    }
-
-    /**
-     * @returns {string}
-     */
-    #parseLogLevelArgument() {
-        const loglevelIndex = process.argv.indexOf('--loglevel');
-
-        if (loglevelIndex > -1) {
-            return process.argv[loglevelIndex + 1] || 'silent';
+        try {
+            parsedArgs = parseArgs({
+                allowPositionals: true,
+                options: {
+                    loglevel: {
+                        type: 'string',
+                    },
+                },
+            });
+        } catch (err) {
+            if (typeof err.code === 'string' && err.code.startsWith('ERR_PARSE_ARGS_')) {
+                console.error(chalkStderr.red(err.message));
+                process.exit(1);
+            }
+            throw err;
         }
 
-        return 'silent';
+        return {
+            defaultProjectName: parsedArgs.positionals[0],
+            defaultOutputPath: parsedArgs.positionals[1],
+            logLevel: parsedArgs.values.loglevel,
+        };
     }
 }
 
