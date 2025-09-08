@@ -2,12 +2,10 @@
 
 import chalk from 'chalk';
 import fs from 'node:fs';
-import fse from 'fs-extra';
 import path from 'node:path';
-import { BOILERPLATE_PATH } from './src/constants.js';
+import { BoilerplateInstaller } from './src/BoilerplateInstaller.js';
 import { CliArgumentParser } from './src/CliArgumentParser.js';
 import { InteractiveUserInputs } from './src/InteractiveUserInputs.js';
-import { PackageJsonUpdater } from './src/PackageJsonUpdater.js';
 
 const parsedArgs = new CliArgumentParser().parseArgs();
 const targetInstallDir = process.cwd();
@@ -24,13 +22,4 @@ if (fs.existsSync(path.join(targetInstallDir, 'package.json'))) {
     }
 }
 
-if (installerResponses.boilerplate === 'ecoma') {
-    console.log(chalk.yellow('Delete exisiting .gitkeep file'));
-    fse.unlink(path.resolve('.gitkeep'), () => {});
-}
-
-console.log(chalk.yellow('Copy files from boilerplate'));
-fse.copySync(path.join(BOILERPLATE_PATH, installerResponses.boilerplate), targetInstallDir);
-
-console.log(chalk.yellow('Installing packages'));
-new PackageJsonUpdater(installerResponses.projectName, parsedArgs.logLevel, installerResponses.outputPath);
+new BoilerplateInstaller().install(targetInstallDir, { ...installerResponses, logLevel: parsedArgs.logLevel });
