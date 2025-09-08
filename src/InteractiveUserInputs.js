@@ -1,7 +1,6 @@
-import { confirm, input, select } from '@inquirer/prompts';
 import fs from 'node:fs';
-import path from 'node:path';
-import url from 'node:url';
+import { BOILERPLATE_PATH } from './constants.js';
+import { confirm, input, select } from '@inquirer/prompts';
 
 class InteractiveUserInputs {
     /**
@@ -81,10 +80,7 @@ class InteractiveUserInputs {
      * @returns {string[]}
      */
     #getBoilerplateNames() {
-        const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
-        const boilerplateDirectoryPath = path.join(__dirname, '..', 'boilerplates');
-
-        return fs.readdirSync(boilerplateDirectoryPath)
+        return fs.readdirSync(BOILERPLATE_PATH)
             .sort(new Intl.Collator('en', { numeric: true, sensitivity: 'base' }).compare);
     }
 
