@@ -67,6 +67,11 @@ export class PackageJsonUpdater {
      * @returns {void}
      */
     updatePackageVersions() {
+        child_process.spawnSync('npm', [
+            'install',
+            '--no-save',
+            'npm-check-updates@latest',
+        ], { stdio: 'inherit' });
         child_process.spawnSync('npx', [
             'npm-check-updates',
             '--upgrade',
