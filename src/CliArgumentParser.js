@@ -1,7 +1,7 @@
 import { chalkStderr } from 'chalk';
 import { parseArgs } from 'node:util';
 
-class CliArgumentParser {
+export class CliArgumentParser {
     /**
      * @typedef {object} ParsedArguments
      * @property {string|undefined} defaultProjectName
@@ -39,7 +39,3 @@ class CliArgumentParser {
         };
     }
 }
-
-export {
-    CliArgumentParser,
-};

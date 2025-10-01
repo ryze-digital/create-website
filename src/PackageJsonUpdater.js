@@ -1,7 +1,7 @@
 import child_process from 'node:child_process';
 import fs from 'node:fs';
 
-class PackageJsonUpdater {
+export class PackageJsonUpdater {
     /**
      * @param {string} projectName
      * @param {string} loglevel
@@ -77,7 +77,3 @@ class PackageJsonUpdater {
         child_process.spawnSync('npm', ['install', '--loglevel', this.loglevel], { stdio: 'inherit' });
     }
 }
-
-export {
-    PackageJsonUpdater,
-};

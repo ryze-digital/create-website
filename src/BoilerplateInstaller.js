@@ -4,7 +4,7 @@ import path from 'node:path';
 import { BOILERPLATE_PATH } from './constants.js';
 import { PackageJsonUpdater } from './PackageJsonUpdater.js';
 
-class BoilerplateInstaller {
+export class BoilerplateInstaller {
     /**
      * @param {string} installDirPath
      * @param {object} installOptions
@@ -46,7 +46,3 @@ class BoilerplateInstaller {
         fs.cpSync(path.join(BOILERPLATE_PATH, boilerplateName), installDirPath, { recursive: true });
     }
 }
-
-export {
-    BoilerplateInstaller,
-};
