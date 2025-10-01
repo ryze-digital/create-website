@@ -1,36 +1,46 @@
 #!/usr/bin/env node
 
-import { PackageJsonUpdater } from './src/PackageJsonUpdater.js';
-import chalk from 'chalk';
+import chalk, { chalkStderr } from 'chalk';
+import fs from 'node:fs';
 import path from 'node:path';
-import fse from 'fs-extra';
+import { BoilerplateInstaller } from './src/BoilerplateInstaller.js';
+import { CliArgumentParser } from './src/CliArgumentParser.js';
+import { ExitPromptError } from '@inquirer/core';
+import { InteractiveUserInputs } from './src/InteractiveUserInputs.js';
 
-const currentDirectory = path.dirname(fse.realpathSync(process.argv[1]));
-const projectName = process.argv[2];
-let outputPath = process.argv[3];
-const loglevelIndex = process.argv.indexOf('--loglevel');
-let loglevel;
+/**
+ * @returns {Promise<void>}
+ */
+async function main() {
+    const parsedArgs = new CliArgumentParser().parseArgs();
+    const targetInstallDir = process.cwd();
 
-if (loglevelIndex > -1) {
-    loglevel = process.argv[loglevelIndex + 1];
+    const interactiveUserInputs = new InteractiveUserInputs(parsedArgs.defaultProjectName, parsedArgs.defaultOutputPath);
+    const installerResponses = await interactiveUserInputs.askAllInstallerQuestions();
+
+    if (fs.existsSync(path.join(targetInstallDir, 'package.json'))) {
+        const shouldContinue = await interactiveUserInputs.askForConfirmation('A package.json file already exists. Continue?');
+
+        if (!shouldContinue) {
+            console.log(chalk.red('Aborting installation'));
+            process.exit(0);
+        }
+    }
+
+    await new BoilerplateInstaller().install(targetInstallDir, {
+        ...installerResponses,
+        logLevel: parsedArgs.logLevel,
+    });
+    console.info(chalk.green('Adventure ready'));
 }
 
-loglevel = (loglevel || 'silent');
+try {
+    await main();
+} catch (err) {
+    if (err instanceof ExitPromptError) {
+        console.error(chalkStderr.red(err.message));
+        process.exit(1);
+    }
 
-if (typeof projectName === 'undefined' || projectName === '@namespace/project-name') {
-    console.error(chalk.red('Please enter the name of your project'));
-    process.exit(9);
+    throw err;
 }
-
-if (typeof outputPath === 'undefined') {
-    outputPath = 'build';
-}
-
-console.log(chalk.yellow('Delete exisiting .gitkeep file'));
-fse.unlink(path.resolve('.gitkeep'), () => {});
-
-console.log(chalk.yellow('Copy files from boilerplate'));
-fse.copySync(path.join(currentDirectory, '/boilerplates/ecoma'), process.cwd());
-
-console.log(chalk.yellow('Installing packages'));
-new PackageJsonUpdater(projectName, loglevel, outputPath);

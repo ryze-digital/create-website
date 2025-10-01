@@ -25,7 +25,7 @@ npm init @ryze-digital/website@latest @namespace/project-name ../../public/dist
 
 _The path has to be relative to the folder in which you run the command._
 
-#### Toubleshooting
+#### Troubleshooting
 
 If you use a path outside the folder in which you run the command, it can happen that the `pre-production` script throws
 the following error:

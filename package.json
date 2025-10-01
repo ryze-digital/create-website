@@ -14,12 +14,16 @@
     "lint": "eslint src/**"
   },
   "dependencies": {
-    "chalk": "^5.4.1",
-    "fs-extra": "^11.2.0",
-    "shelljs": "^0.8.5"
+    "@inquirer/core": "^10.2.0",
+    "@inquirer/prompts": "^7.8.4",
+    "chalk": "^5.6.1"
   },
   "devDependencies": {
-    "@ryze-digital/eslint-config-website": "^1.0.0"
+    "@ryze-digital/eslint-config-website": "^1.0.0",
+    "@types/node": "^20.19.13"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "keywords": [
     "initializer",

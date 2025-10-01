@@ -1,50 +1,49 @@
+import child_process from 'node:child_process';
 import fs from 'node:fs';
-import util from 'node:util';
-import path from 'node:path';
-import shell from 'shelljs';
-import chalk from 'chalk';
 
-class PackageJsonUpdater {
+export class PackageJsonUpdater {
     /**
-     *
      * @param {string} projectName
      * @param {string} loglevel
      * @param {string} outputPath
      * @param {string} packageJsonPath
      */
-    constructor(projectName, loglevel, outputPath, packageJsonPath = path.resolve('package.json')) {
-        this.packageJsonPath = packageJsonPath;
+    constructor(projectName, loglevel, outputPath, packageJsonPath) {
         this.projectName = projectName;
         this.loglevel = loglevel;
         this.outputPath = outputPath;
-
-        this.readFile = util.promisify(fs.readFile);
-        this.writeFile = util.promisify(fs.writeFile);
+        this.packageJsonPath = packageJsonPath;
 
         this.editPackageJson = this.editPackageJson.bind(this);
         this.savePackageJson = this.savePackageJson.bind(this);
         this.updatePackageVersions = this.updatePackageVersions.bind(this);
-
-        this.init();
     }
 
     /**
-     *
-     * @returns {Function}
+     * @returns {Promise<void>}
+     */
+    execute() {
+        return this.readPackageJson()
+            .then(this.editPackageJson)
+            .then(this.savePackageJson)
+            .then(this.updatePackageVersions);
+    }
+
+    /**
+     * @returns {Promise<string>}
      */
     readPackageJson() {
-        return this.readFile(this.packageJsonPath);
+        return fs.promises.readFile(this.packageJsonPath, 'utf-8');
     }
 
     /**
-     *
-     * @param {object} data
-     * @returns {Promise}
+     * @param {string} data
+     * @returns {Promise<object>}
      */
     editPackageJson(data) {
         return new Promise((resolve, reject) => {
             try {
-                const json = JSON.parse(data.toString());
+                const json = JSON.parse(data);
 
                 json.name = this.projectName;
                 json.config.output = this.outputPath;
@@ -57,33 +56,24 @@ class PackageJsonUpdater {
     }
 
     /**
-     *
-     * @param {json} json
-     * @returns {Function}
+     * @param {object} json
+     * @returns {Promise<void>}
      */
     savePackageJson(json) {
-        return this.writeFile(this.packageJsonPath, JSON.stringify(json, null, 2));
+        return fs.promises.writeFile(this.packageJsonPath, JSON.stringify(json, null, 2));
     }
 
+    /**
+     * @returns {void}
+     */
     updatePackageVersions() {
-        shell.exec(`npx npm-check-updates --target minor --upgrade --packageFile package.json --loglevel ${this.loglevel}`, () => {
-            shell.exec(`npm install --loglevel ${this.loglevel}`, () => {
-                console.info(chalk.green('Adventure ready'));
-            });
-        });
-    }
-
-    init() {
-        this.readPackageJson()
-            .then(this.editPackageJson)
-            .then(this.savePackageJson)
-            .then(this.updatePackageVersions)
-            .catch((error) => {
-                console.error(chalk.red(error));
-            });
+        child_process.spawnSync('npx', [
+            'npm-check-updates',
+            '--upgrade',
+            '--target', 'minor',
+            '--packageFile', 'package.json',
+            '--loglevel', this.loglevel,
+        ], { stdio: 'inherit' });
+        child_process.spawnSync('npm', ['install', '--loglevel', this.loglevel], { stdio: 'inherit' });
     }
 }
-
-export {
-    PackageJsonUpdater
-};
