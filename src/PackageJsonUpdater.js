@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import child_process from 'node:child_process';
 import fs from 'node:fs';
 
@@ -67,6 +68,7 @@ export class PackageJsonUpdater {
      * @returns {void}
      */
     updatePackageVersions() {
+        console.log(chalk.yellow('Running npm-check-updates to update package versions'));
         child_process.spawnSync('npm', [
             'install',
             '--no-save',
@@ -79,6 +81,8 @@ export class PackageJsonUpdater {
             '--packageFile', 'package.json',
             '--loglevel', this.loglevel,
         ], { stdio: 'inherit' });
+
+        console.log(chalk.yellow('Running npm install'));
         child_process.spawnSync('npm', ['install', '--loglevel', this.loglevel], { stdio: 'inherit' });
     }
 }
