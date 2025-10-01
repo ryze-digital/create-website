@@ -21,6 +21,7 @@ export class CliArgumentParser {
                 options: {
                     loglevel: {
                         type: 'string',
+                        default: 'silent',
                     },
                 },
             });
