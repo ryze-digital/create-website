@@ -1,9 +1,14 @@
 import path from 'path';
 import TerserPlugin from 'terser-webpack-plugin';
-import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import packageJson from './package.json' with { type: 'json' };
 
-export default function (env, argv) {
+/**
+ * @param {string} env
+ * @param {object} argv
+ * @returns {object}
+ */
+export default function(env, argv) {
     let mode = 'development';
 
     const plugins = [];

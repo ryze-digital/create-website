@@ -12,7 +12,7 @@
   "scripts": {
     "check-engine": "node check-engine.js",
     "lint": "npm-run-all --parallel lint:*",
-    "lint:scripts": "eslint {src,tests}/scripts/**",
+    "lint:scripts": "eslint src tests/scripts ./*.js",
     "lint:styles": "stylelint src/styles/**",
     "lint-fix": "npm-run-all --parallel lint-fix:* --continue-on-error",
     "lint-fix:scripts": "npm run lint:scripts -- --fix",
