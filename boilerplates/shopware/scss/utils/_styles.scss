@@ -4,4 +4,6 @@
     // Configuration goes here
 ));
 
-@include scss-utilities.global-styles();
+@include scss-utilities.global-styles(
+    $universal: false
+);
