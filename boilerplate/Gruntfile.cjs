@@ -15,6 +15,7 @@ module.exports = function (grunt) {
                     process (content) {
                         content = content.replace(/font-display:optional/g, 'font-display:block');
                         content = content.replace(/scroll-behavior:smooth/g, 'scroll-behavior:auto');
+                        content += 'html{scrollbar-gutter:stable}';
 
                         return content;
                     }
