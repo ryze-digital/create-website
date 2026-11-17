@@ -1,7 +1,9 @@
 @use "@ryze-digital/scss-utilities";
 
-@include scss-utilities.configure((
-    // Configuration goes here
-));
+@include scss-utilities.configure(
+    (
+        // Configuration goes here
+    )
+);
 
 @include scss-utilities.global-styles();

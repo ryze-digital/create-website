@@ -1,15 +1,19 @@
+const coreJsVersion = require("core-js/package.json").version;
+
 module.exports = function (api) {
     api.cache(true);
 
     return {
-        presets: [
-            ['@babel/preset-env', {
-                useBuiltIns: 'usage',
-                corejs: {
-                    version: 3
-                }
-            }]
+        presets: ["@babel/preset-env"],
+        plugins: [
+            [
+                "babel-plugin-polyfill-corejs3",
+                {
+                    method: "usage-global",
+                    version: coreJsVersion,
+                },
+            ],
         ],
-        sourceType: 'unambiguous'
+        sourceType: "unambiguous",
     };
 };

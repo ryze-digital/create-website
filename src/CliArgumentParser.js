@@ -1,5 +1,5 @@
-import { chalkStderr } from 'chalk';
-import { parseArgs } from 'node:util';
+import { chalkStderr } from "chalk";
+import { parseArgs } from "node:util";
 
 export class CliArgumentParser {
     /**
@@ -20,13 +20,13 @@ export class CliArgumentParser {
                 allowPositionals: true,
                 options: {
                     loglevel: {
-                        type: 'string',
-                        default: 'silent',
+                        type: "string",
+                        default: "silent",
                     },
                 },
             });
         } catch (err) {
-            if (typeof err.code === 'string' && err.code.startsWith('ERR_PARSE_ARGS_')) {
+            if (typeof err.code === "string" && err.code.startsWith("ERR_PARSE_ARGS_")) {
                 console.error(chalkStderr.red(err.message));
                 process.exit(1);
             }

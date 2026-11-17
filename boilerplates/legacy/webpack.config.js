@@ -1,98 +1,90 @@
-import path from 'path';
-import TerserPlugin from 'terser-webpack-plugin';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import packageJson from './package.json' with { type: 'json' };
+import path from "path";
+import TerserPlugin from "terser-webpack-plugin";
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 
 /**
  * @param {string} env
  * @param {object} argv
  * @returns {object}
  */
-export default function(env, argv) {
-    let mode = 'development';
+export default function (env, argv) {
+    let mode = "development";
 
     const plugins = [];
 
     if (!argv.watch) {
-        mode = 'production';
+        mode = "production";
 
-        plugins.push(new BundleAnalyzerPlugin({
-            analyzerMode: 'static',
-            reportFilename: 'webpack-report.html',
-            openAnalyzer: false
-        }));
+        plugins.push(
+            new BundleAnalyzerPlugin({
+                analyzerMode: "static",
+                reportFilename: "webpack-report.html",
+                openAnalyzer: false,
+            }),
+        );
     }
 
     return {
         mode,
         devtool: false,
         entry: {
-            main: ['./src/scripts/main'],
-            lazysizes: ['./src/scripts/lazysizes']
+            main: ["./src/scripts/main"],
+            // feature:lazysizes:start
+            lazysizes: ["./src/scripts/lazysizes"],
+            // feature:lazysizes:end
         },
         output: {
-            path: path.resolve(`${packageJson.config.output}/`),
-            publicPath: '/project/frontend/'
+            path: path.resolve("__OUTPUT_PATH__"),
+            publicPath: "/project/frontend/",
         },
         optimization: {
             splitChunks: {
                 cacheGroups: {
-                    lazysizes: {
-                        test: (mod) => {
-                            // Excluding all except lazysizes
-                            if (!mod.context.includes('node_modules/lazysizes')) {
-                                return false;
-                            }
-
-                            return true;
-                        },
-                        name: 'lazysizes',
-                        chunks: 'all',
-                        enforce: true
-                    },
                     defaultVendors: {
                         test: (mod) => {
-                            // Only include all node_modules excluding lazysizes
-                            if (!mod.context.includes('node_modules') || mod.context.includes('lazysizes')) {
+                            // Only include node_modules
+                            if (!mod.context.includes("node_modules")) {
                                 return false;
                             }
 
+                            // feature:lazysizes:start
+                            // Excluding lazysizes, because it has its own entry chunk and must not be moved to vendor
+                            if (mod.context.includes("lazysizes")) {
+                                return false;
+                            }
+
+                            // feature:lazysizes:end
                             return true;
                         },
-                        name: 'vendor',
-                        chunks: 'all',
-                        enforce: true
-                    }
-                }
+                        name: "vendor",
+                        chunks: "all",
+                        enforce: true,
+                    },
+                },
             },
             runtimeChunk: {
-                name: 'runtime'
+                name: "runtime",
             },
-            minimizer: [
-                new TerserPlugin()
-            ]
+            minimizer: [new TerserPlugin()],
         },
         plugins,
         module: {
             rules: [
                 {
                     test: /\.(js|mjs)$/,
-                    exclude: [
-                        /\bcore-js\b/,
-                        /\bwebpack\/buildin\b/
-                    ],
+                    exclude: [/\bcore-js\b/, /\bwebpack\/buildin\b/],
                     use: {
-                        loader: 'babel-loader',
+                        loader: "babel-loader",
                         options: {
-                            cacheDirectory: true
-                        }
+                            cacheDirectory: true,
+                        },
                     },
                     resolve: {
                         // https://webpack.js.org/configuration/module/#resolvefullyspecified
-                        fullySpecified: false
-                    }
-                }
-            ]
-        }
+                        fullySpecified: false,
+                    },
+                },
+            ],
+        },
     };
-};
+}
